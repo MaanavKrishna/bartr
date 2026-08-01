@@ -4,8 +4,15 @@
 -- `postgis` lives in the `extensions` schema on Supabase but resolves through
 -- the default search_path either way.
 
-CREATE EXTENSION IF NOT EXISTS postgis;
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
+-- Supabase keeps extensions in a dedicated `extensions` schema rather than
+-- polluting `public` with PostGIS's ~1000 functions. Creating the schema first
+-- means this migration behaves identically on a bare local Postgres. If an
+-- extension is already installed elsewhere, IF NOT EXISTS leaves it be.
+CREATE SCHEMA IF NOT EXISTS extensions;
+SET search_path = public, extensions;
+
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA extensions;
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA extensions;
 
 -- `array_to_string` is declared STABLE rather than IMMUTABLE because, for an
 -- arbitrary element type, it depends on that type's output function. For
@@ -134,8 +141,10 @@ CREATE TABLE IF NOT EXISTS listings (
   ),
 
   -- Geography point derived from the two columns above, so they cannot drift.
+  -- Schema-qualified so the expression does not depend on search_path, which
+  -- differs between a bare local Postgres and Supabase.
   geog geography(Point, 4326)
-    GENERATED ALWAYS AS (ST_SetSRID(ST_MakePoint(longitude, latitude), 4326)::geography) STORED,
+    GENERATED ALWAYS AS (extensions.ST_SetSRID(extensions.ST_MakePoint(longitude, latitude), 4326)::geography) STORED,
 
   -- Weighted full-text index: a title hit outranks a tag hit outranks prose.
   search_vector tsvector
@@ -155,7 +164,7 @@ CREATE INDEX IF NOT EXISTS listings_status_idx    ON listings (status);
 CREATE INDEX IF NOT EXISTS listings_geog_idx      ON listings USING GIST (geog);
 CREATE INDEX IF NOT EXISTS listings_search_idx    ON listings USING GIN (search_vector);
 -- Trigram index rescues misspelled searches that full-text misses entirely.
-CREATE INDEX IF NOT EXISTS listings_title_trgm_idx ON listings USING GIN (title gin_trgm_ops);
+CREATE INDEX IF NOT EXISTS listings_title_trgm_idx ON listings USING GIN (title extensions.gin_trgm_ops);
 
 -- ------------------------------------------------------------ listing images
 

@@ -1,7 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#0b7a54" />
-  <path
-    d="M11 9h5.4c2.4 0 3.9 1.2 3.9 3.1 0 1.3-.7 2.3-1.9 2.7 1.5.4 2.4 1.5 2.4 3 0 2.2-1.7 3.6-4.4 3.6H11V9zm4.9 4.9c1 0 1.6-.5 1.6-1.3s-.6-1.3-1.6-1.3h-2.2v2.6h2.2zm.3 5c1.1 0 1.8-.5 1.8-1.4s-.7-1.4-1.8-1.4h-2.5v2.8h2.5z"
-    fill="#ffffff"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Bartr">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#10b981" />
+      <stop offset="1" stop-color="#0f766e" />
+    </linearGradient>
+    <!-- One arrow, drawn once and mirrored through the centre so the mark stays
+         balanced at every size. The head is stroked as well as filled so its
+         corners round off to match the shaft's caps. -->
+    <g id="arrow" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7.5 11.5h10" stroke-width="3" fill="none" />
+      <path d="M17.4 7.9 24.2 11.5 17.4 15.1Z" stroke-width="2.2" fill="#ffffff" />
+    </g>
+  </defs>
+
+  <rect width="32" height="32" rx="8" fill="url(#tile)" />
+  <use href="#arrow" />
+  <use href="#arrow" transform="rotate(180 16 16)" />
 </svg>

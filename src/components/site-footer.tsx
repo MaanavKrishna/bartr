@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { BartrMark } from "@/components/bartr-mark";
 import { CATEGORY_META } from "@/lib/constants";
 import { CATEGORIES } from "@/lib/types";
 
@@ -9,9 +10,7 @@ export function SiteFooter() {
       <div className="container grid gap-10 py-12 md:grid-cols-[2fr_1fr_1fr]">
         <div className="max-w-sm space-y-3">
           <div className="flex items-center gap-2">
-            <span className="grid h-7 w-7 place-items-center rounded-md bg-primary text-xs font-black text-primary-foreground">
-              B
-            </span>
+            <BartrMark className="h-7 w-7 rounded-md" />
             <span className="font-bold tracking-tight">Bartr</span>
           </div>
           <p className="text-sm text-muted-foreground">

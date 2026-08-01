@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Heart, LayoutDashboard, Plus, Search, Store } from "lucide-react";
 
+import { BartrMark } from "@/components/bartr-mark";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useSavedListings } from "@/components/saved-listings-provider";
 import { Badge } from "@/components/ui/badge";
@@ -45,9 +46,7 @@ export function SiteHeader() {
           being squeezed between the logo and the nav. */}
       <div className="container flex flex-wrap items-center gap-3 py-3 sm:h-16 sm:flex-nowrap sm:py-0">
         <Link href="/" className="flex shrink-0 items-center gap-2">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-sm font-black text-primary-foreground">
-            B
-          </span>
+          <BartrMark />
           <span className="text-lg font-bold tracking-tight">Bartr</span>
         </Link>
 

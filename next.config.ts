@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+// No overrides needed yet — defaults cover this app.
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

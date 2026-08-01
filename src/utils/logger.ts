@@ -27,7 +27,11 @@ export class Logger {
 
   private reset = "\x1b[0m";
 
-  private formatMessage(level: LogLevel, message: string, data?: unknown): string {
+  private formatMessage(
+    level: LogLevel,
+    message: string,
+    data?: unknown
+  ): string {
     const timestamp = this.getTimestamp();
     const env = this.isServer ? "[SERVER]" : "[CLIENT]";
     const colorCode = this.getColorCode(level);
@@ -43,9 +47,13 @@ export class Logger {
   error(message: string, error?: unknown): void {
     if (this.isServer) {
       if (error instanceof Error) {
-        console.error(this.formatMessage("error", message, {
-          name: error.name, message: error.message, stack: error.stack,
-        }));
+        console.error(
+          this.formatMessage("error", message, {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+          })
+        );
       } else {
         console.error(this.formatMessage("error", message, error));
       }
@@ -57,7 +65,8 @@ export class Logger {
   }
 
   debug(message: string, data?: unknown): void {
-    if (this.isServer) console.debug(this.formatMessage("debug", message, data));
+    if (this.isServer)
+      console.debug(this.formatMessage("debug", message, data));
   }
 
   action(message: string, data?: unknown): void {

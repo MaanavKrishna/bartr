@@ -2,20 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 40 33% 99%;
+    --foreground: 160 12% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 12% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 12% 10%;
+
+    --primary: 161 84% 26%;
+    --primary-foreground: 150 60% 98%;
+
+    --secondary: 150 18% 95%;
+    --secondary-foreground: 160 14% 18%;
+
+    --muted: 150 18% 95%;
+    --muted-foreground: 155 8% 42%;
+
+    --accent: 24 92% 52%;
+    --accent-foreground: 30 60% 98%;
+
+    --destructive: 0 72% 46%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 150 14% 89%;
+    --input: 150 14% 89%;
+    --ring: 161 84% 26%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 165 22% 6%;
+    --foreground: 150 12% 95%;
+
+    --card: 165 20% 9%;
+    --card-foreground: 150 12% 95%;
+
+    --popover: 165 20% 9%;
+    --popover-foreground: 150 12% 95%;
+
+    --primary: 158 64% 48%;
+    --primary-foreground: 165 30% 8%;
+
+    --secondary: 165 14% 15%;
+    --secondary-foreground: 150 12% 95%;
+
+    --muted: 165 14% 15%;
+    --muted-foreground: 150 8% 64%;
+
+    --accent: 24 88% 58%;
+    --accent-foreground: 20 40% 10%;
+
+    --destructive: 0 62% 52%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 165 12% 18%;
+    --input: 165 12% 20%;
+    --ring: 158 64% 48%;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+  }
+}
+
+@layer utilities {
+  /* Hides the scrollbar on horizontally scrolling filter rails. */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

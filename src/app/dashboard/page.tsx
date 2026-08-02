@@ -26,6 +26,23 @@ export const metadata: Metadata = {
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
+
+  // Authentication is not wired up yet, so nobody is ever signed in. This is
+  // the real signed-out state rather than a placeholder — once auth lands it
+  // becomes correct behaviour with no change.
+  if (!user) {
+    return (
+      <div className="container py-24">
+        <EmptyState
+          emoji="🔐"
+          title="Sign in to see your dashboard"
+          description="Your listings, the offers you have received and your seller stats live here. Accounts are coming shortly."
+          action={{ href: "/browse", label: "Browse the marketplace" }}
+        />
+      </div>
+    );
+  }
+
   const [listings, offers, stats] = await Promise.all([
     listListingsBySeller(user.id),
     listOffersForSeller(user.id),

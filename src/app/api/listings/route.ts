@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-import { createListing, getListing, searchListings } from "@/lib/data/store";
+import {
+  createListing,
+  getCurrentUser,
+  getListing,
+  searchListings,
+} from "@/lib/data/store";
 import { parseListingQuery } from "@/lib/listings/query";
 import { createListingSchema, fieldErrors } from "@/lib/validation";
 import { Logger } from "@/utils/logger";
@@ -49,9 +54,20 @@ export async function POST(request: Request) {
     );
   }
 
+  // Publishing is not something an anonymous caller can do. Checking here
+  // turns what would surface as a 500 from the data layer into the 401 it
+  // actually is.
+  const viewer = await getCurrentUser();
+  if (!viewer) {
+    return NextResponse.json(
+      { error: "Sign in to publish a listing." },
+      { status: 401 }
+    );
+  }
+
   try {
     const input = createListingSchema.parse(body);
-    const listing = await createListing(input);
+    const listing = await createListing({ ...input, sellerId: viewer.id });
     return NextResponse.json({ listing }, { status: 201 });
   } catch (error) {
     if (error instanceof ZodError) {

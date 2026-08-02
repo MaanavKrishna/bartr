@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 
 import {
   createOffer,
+  getCurrentUser,
   getListing,
   listOffersForListing,
 } from "@/lib/data/store";
@@ -45,6 +46,14 @@ export async function POST(
     );
   }
 
+  const viewer = await getCurrentUser();
+  if (!viewer) {
+    return NextResponse.json(
+      { error: "Sign in to make an offer." },
+      { status: 401 }
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -57,7 +66,11 @@ export async function POST(
 
   try {
     const input = createOfferSchema.parse(body);
-    const offer = await createOffer({ ...input, listingId: id });
+    const offer = await createOffer({
+      ...input,
+      listingId: id,
+      fromUserId: viewer.id,
+    });
     return NextResponse.json({ offer }, { status: 201 });
   } catch (error) {
     if (error instanceof ZodError) {
